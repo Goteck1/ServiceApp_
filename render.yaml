@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: servi-app-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn src.main:app"
+    rootDir: servicios-backend
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: FLASK_APP
+        value: src/main.py
+      - key: FLASK_ENV
+        value: production
+
+  - type: static
+    name: servi-app-frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "dist"
+    rootDir: servicios-app
+    envVars:
+      - key: REACT_APP_API_URL
+        value: "https://servi-app-backend.onrender.com/api" # Reemplazar con la URL real del backend en Render
+
+
