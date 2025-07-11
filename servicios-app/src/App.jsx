@@ -32,6 +32,8 @@ function App() {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const API_URL = process.env.REACT_APP_API_URL || '/api'
+
   const iconMap = {
     'zap': Zap,
     'droplets': Droplets,
@@ -58,7 +60,7 @@ function App() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories')
+      const response = await fetch(`${API_URL}/categories`)
       const data = await response.json()
       setCategories(data)
     } catch (error) {
@@ -68,7 +70,7 @@ function App() {
 
   const fetchFeaturedProfessionals = async () => {
     try {
-      const response = await fetch('/api/professionals')
+      const response = await fetch(`${API_URL}/professionals`)
       const data = await response.json()
       setProfessionals(data.slice(0, 2)) // Show only first 2 for featured
     } catch (error) {
@@ -79,7 +81,7 @@ function App() {
   const fetchProfessionalsByCategory = async (category) => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/professionals?category=${category}`)
+      const response = await fetch(`${API_URL}/professionals?category=${category}`)
       const data = await response.json()
       setProfessionals(data)
     } catch (error) {
@@ -91,7 +93,7 @@ function App() {
 
   const fetchProfessionalReviews = async (professionalId) => {
     try {
-      const response = await fetch(`/api/professionals/${professionalId}/reviews`)
+      const response = await fetch(`${API_URL}/professionals/${professionalId}/reviews`)
       const data = await response.json()
       setReviews(data)
     } catch (error) {
