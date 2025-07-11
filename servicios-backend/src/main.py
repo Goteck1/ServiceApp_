@@ -15,7 +15,7 @@ from src.routes.service_request import service_request_bp
 from src.routes.review import review_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
-app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'change-me')
 
 # Enable CORS for all routes
 CORS(app)
@@ -27,7 +27,10 @@ app.register_blueprint(service_request_bp, url_prefix='/api')
 app.register_blueprint(review_bp, url_prefix='/api')
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URI',
+    f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
