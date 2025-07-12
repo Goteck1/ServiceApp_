@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 import sys
 # DON'T CHANGE THIS !!!
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
