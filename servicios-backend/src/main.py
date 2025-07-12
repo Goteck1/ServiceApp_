@@ -13,6 +13,7 @@ from src.routes.user import user_bp
 from src.routes.professional import professional_bp
 from src.routes.service_request import service_request_bp
 from src.routes.review import review_bp
+from src.routes.auth import auth_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'change-me')
@@ -25,6 +26,7 @@ app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(professional_bp, url_prefix='/api')
 app.register_blueprint(service_request_bp, url_prefix='/api')
 app.register_blueprint(review_bp, url_prefix='/api')
+app.register_blueprint(auth_bp, url_prefix='/api')
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(

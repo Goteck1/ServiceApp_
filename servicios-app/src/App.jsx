@@ -1,9 +1,13 @@
+/* global process */
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.jsx'
+import LoginTabs from './LoginTabs.jsx'
+import Profile from './Profile.jsx'
+import { useUser } from './UserContext.jsx'
 import { 
   Search, 
   Home, 
@@ -24,6 +28,7 @@ import {
 import './App.css'
 
 function App() {
+  const { user } = useUser()
   const [currentView, setCurrentView] = useState('home')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedProfessional, setSelectedProfessional] = useState(null)
@@ -119,6 +124,16 @@ function App() {
     } else if (currentView === 'professionals') {
       setCurrentView('home')
       fetchFeaturedProfessionals() // Refresh featured professionals
+    } else if (currentView === 'login' || currentView === 'user-profile') {
+      setCurrentView('home')
+    }
+  }
+
+  const handlePerfilClick = () => {
+    if (user) {
+      setCurrentView('user-profile')
+    } else {
+      setCurrentView('login')
     }
   }
 
@@ -211,7 +226,7 @@ function App() {
             <Clock className="w-6 h-6" />
             <span className="text-xs">Historial</span>
           </Button>
-          <Button variant="ghost" className="flex flex-col items-center space-y-1 text-gray-600">
+          <Button variant="ghost" className="flex flex-col items-center space-y-1 text-gray-600" onClick={handlePerfilClick}>
             <User className="w-6 h-6" />
             <span className="text-xs">Perfil</span>
           </Button>
@@ -290,7 +305,7 @@ function App() {
               <Clock className="w-6 h-6" />
               <span className="text-xs">Historial</span>
             </Button>
-            <Button variant="ghost" className="flex flex-col items-center space-y-1 text-gray-600">
+            <Button variant="ghost" className="flex flex-col items-center space-y-1 text-gray-600" onClick={handlePerfilClick}>
               <User className="w-6 h-6" />
               <span className="text-xs">Perfil</span>
             </Button>
@@ -429,7 +444,7 @@ function App() {
               <Clock className="w-6 h-6" />
               <span className="text-xs">Historial</span>
             </Button>
-            <Button variant="ghost" className="flex flex-col items-center space-y-1 text-gray-600">
+            <Button variant="ghost" className="flex flex-col items-center space-y-1 text-gray-600" onClick={handlePerfilClick}>
               <User className="w-6 h-6" />
               <span className="text-xs">Perfil</span>
             </Button>
@@ -444,6 +459,8 @@ function App() {
       {currentView === 'home' && renderHome()}
       {currentView === 'professionals' && renderProfessionals()}
       {currentView === 'profile' && renderProfile()}
+      {currentView === 'login' && <LoginTabs onSuccess={() => setCurrentView('user-profile')} />}
+      {currentView === 'user-profile' && <Profile />}
     </div>
   )
 }
